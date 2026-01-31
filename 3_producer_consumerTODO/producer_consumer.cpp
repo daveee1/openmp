@@ -2,10 +2,15 @@
 #include <stdio.h>
 #include <iostream>
 #include <mutex>
-using namespace std; 
+#include <random>
 
-// TODO i need a MUTEX
-mutex buff_mutex;
+std::cout;
+std::endl;
+
+#define BUFFER_SIZE 8;
+int buffer[BUFFER_SIZE];
+int next_free_position = 0;	// next free position
+int last_item_position = 0;
 
 
 int available_items(int [] arr){
@@ -20,15 +25,44 @@ int available_items(int [] arr){
 	}
 }
 
-void producer(int writer_id, int [] arr){
-	// TODO when to be activated? when available_items == 0
-	if()	
+int rnd_generator()
+{
+	
+	std::random_device dev;
+	std::mt19937 rng(dev());	
+	std::uniform_int_distribution<std::mt19937::result_type> dist6(1,99); // distribution
+	return dist6(rng);
 }
 
+// produces one item
+void producer(){
+	// TODO when to be activated? when available_items < BUFF_SIZE - 1
+	if(last_item_position == BUFFER_SIZE - 1)
+		consumer();
+	#pragma omp critical
+	{
+		buffer[next_free_position] = rnd_generator();
+		last_item_position = next_free_position;
+		next_free_position++;
+	}	
+}
+
+
+// consumes one item
 void consumer(){
-	// TODO when to be activated? when available_items >= 0
-	if(available_items(buff)==0);
-		//call producer
+	// TODO when to be activated? when available_items > 0
+	//call producer
+	if(available_items(buff)==0)
+	 	producer();
+	// there are enough items: we can consume
+	// CRITICAL SECTION
+	#pragma omp critical
+	{
+		buffer[last_item_position] = NULL;
+		last_item_position -= 1;
+		next_item_position -= 1;
+	}
+       		
 	
 }
 
