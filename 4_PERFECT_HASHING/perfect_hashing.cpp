@@ -21,11 +21,40 @@ class HASH_TABLE{
 	//elements
 	private:
 	       	struct Entry{
-			int *key;
-			int *values;
+			int key;
+			int value;
+			Entry *next;
+		};
+
+		Entry **h_table;
+		
+	public:
+		explicit HASH_TABLE();
+		~HASH_TABLE();
+		void insert_in_bin(int key, int value);
+		void erase();
+		
+		HASH_TABLE::HASH_TABLE()
+		{
+			h_table = new Entry*[N];
+			for (int i=0; i<N; i++)
+				h_table[i] = nullptr;
 		}
-
-
+		
+		HASH_TABLE :: ~HASH_TABLE()
+		{
+			for(int i=0; i<N; i++)
+			{
+				Entry *current = h_table[i];
+				while (current)
+				{
+					Entry *next = curr->next;
+					delete curr;
+					curr = next;
+				}
+			}
+			delete [] h_table;
+		} 	
 }
 
 
