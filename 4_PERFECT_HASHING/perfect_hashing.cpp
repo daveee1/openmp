@@ -23,7 +23,6 @@ class HASH_TABLE{
 	       	struct Entry{
 			int *key;
 			int *values;
-			
 		}
 
 
