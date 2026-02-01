@@ -4,69 +4,14 @@
 	// works in reality
 	
 #include <iostream>
-//using namespace std;
-using std::cout;	// i just import cout, not all the package
 #include <random>
+using std::cout;	// i just import cout, not all the package
 
 
 
 
 const int N = 8;	// size of the dictionary
 int a, b;		// hash function parameters
-
-
-// HASH-TABLE
-
-class HASH_TABLE{
-	//elements
-	private:
-	       	struct Entry{
-			int key;
-			int value;
-			Entry *next;
-		};
-
-		Entry **h_table;
-		
-	public:
-		explicit HASH_TABLE();
-		~HASH_TABLE();
-		void insert_in_bin(int key, int value);
-		void erase();
-		
-		HASH_TABLE::HASH_TABLE()
-		{
-			h_table = new Entry*[N];
-			for (int i=0; i<N; i++)
-				h_table[i] = nullptr;
-		}
-		
-		HASH_TABLE :: ~HASH_TABLE()
-		{
-			for(int i=0; i<N; i++)
-			{
-				Entry *current = h_table[i];
-				while (current)
-				{
-					Entry *next = curr->next;
-					delete curr;
-					curr = next;
-				}
-			}
-			delete [] h_table;
-		} 	
-}
-
-
-
-
-
-
-void mapping(int S[])
-{
-	// now we need an hash table of hash tables
-	
-}
 
 
 
@@ -76,6 +21,68 @@ int _2_hash_family(int x)
 {
 	return (a * x + b) % N;
 }
+
+
+
+// HASH-TABLE
+class HASH_TABLE{
+	//elements
+	private:
+	       	struct Entry{
+			int key;     
+			Entry *next;
+		};
+
+		Entry **h_table;
+		
+	public:
+		explicit HASH_TABLE();
+		~HASH_TABLE();
+		void insert(int key);
+		void erase();
+	
+};
+
+
+HASH_TABLE::HASH_TABLE()
+{
+	h_table = new Entry*[N];
+	for (int i=0; i<N; i++)
+		h_table[i] = nullptr;
+}
+
+HASH_TABLE :: ~HASH_TABLE()
+{
+	for(int i=0; i<N; i++)
+	{
+		Entry *curr = h_table[i]; //pointer to current bin first element
+		while (curr)
+		{
+			Entry *next = curr->next;
+			delete curr;
+			curr = next;
+		}
+	}
+	delete [] h_table;
+} 	
+
+
+void HASH_TABLE :: insert(int key)
+{
+	// BASE CASE: first element inserted in this bin
+	Entry *curr = h_table[_2_hash_family(key)]; //load the first element in the selected bin by the hash function
+	if (curr == nullptr){
+		h_table[_2_hash_family(key)] = new Entry{key, nullptr};
+		return;
+	}
+	
+	while (curr->next){
+		curr = curr->next;
+	}
+	curr->next = new Entry{key, nullptr};
+}
+
+
 
  
 
