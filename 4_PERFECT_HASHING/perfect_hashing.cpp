@@ -15,7 +15,6 @@ int a, b;		// hash function parameters
 
 
 
-
 // function that creates an hash function pairwise independent
 int _2_hash_family(int x)
 {
@@ -32,6 +31,7 @@ class HASH_TABLE{
 			int key;     
 			Entry *next;
 		};
+		//TODO create methods to return the key of the entries
 
 		Entry **h_table;
 		
@@ -39,8 +39,8 @@ class HASH_TABLE{
 		explicit HASH_TABLE();
 		~HASH_TABLE();
 		void insert(int key);
-		void erase();
-	
+		void print_hashtable();
+		
 };
 
 
@@ -50,6 +50,7 @@ HASH_TABLE::HASH_TABLE()
 	for (int i=0; i<N; i++)
 		h_table[i] = nullptr;
 }
+
 
 HASH_TABLE :: ~HASH_TABLE()
 {
@@ -66,6 +67,15 @@ HASH_TABLE :: ~HASH_TABLE()
 	delete [] h_table;
 } 	
 
+void HASH_TABLE :: print_hashtable()
+{
+	for(int i=0; i<N; i++){
+		Entry *curr_bin = h_table[i];
+		while (curr_bin){
+			
+		}
+	}
+}
 
 void HASH_TABLE :: insert(int key)
 {
@@ -85,8 +95,6 @@ void HASH_TABLE :: insert(int key)
 
 
  
-
-
 // modern approach to generate rnd numbers in [0, 99]
 int generate_randomness(){
 	// modern approach to randomness
@@ -136,6 +144,12 @@ int main()
 	int length_U = sizeof(U) / sizeof(int);
 	fill_dictionary(U, length_U);
 	print_dictionary(U, length_U);
+
+
+	HASH_TABLE h;
+	for (int i=0; i<N; i++)
+		h.insert(S[i]);
+	
 
 
 	return 0;
