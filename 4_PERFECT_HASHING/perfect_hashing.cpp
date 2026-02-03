@@ -69,12 +69,17 @@ HASH_TABLE :: ~HASH_TABLE()
 
 void HASH_TABLE :: print_hashtable()
 {
+	cout << "\n";
 	for(int i=0; i<N; i++){
-		Entry *curr_bin = h_table[i];
-		while (curr_bin){
-			
+		Entry *curr_bin_pos_i = h_table[i];
+		cout << "\n bin " << i << ":\t";
+		while (curr_bin_pos_i){
+			cout << curr_bin_pos_i->key << " ";
+			Entry *next = curr_bin_pos_i->next;
+			curr_bin_pos_i = next;	
 		}
 	}
+	cout << "\n";
 }
 
 void HASH_TABLE :: insert(int key)
@@ -149,7 +154,7 @@ int main()
 	HASH_TABLE h;
 	for (int i=0; i<N; i++)
 		h.insert(S[i]);
-	
+	h.print_hashtable();	
 
 
 	return 0;
