@@ -10,7 +10,7 @@ using std::cout;	// i just import cout, not all the package
 
 
 
-const int N = 8;	// size of the dictionary
+const int N = 20;	// size of the dictionary
 int a, b;		// hash function parameters
 
 
@@ -24,6 +24,7 @@ int _2_hash_family(int x)
 
 
 // HASH-TABLE
+// FIRST LEVEL APPROACH
 class HASH_TABLE{
 	//elements
 	private:
@@ -69,17 +70,16 @@ HASH_TABLE :: ~HASH_TABLE()
 
 void HASH_TABLE :: print_hashtable()
 {
-	cout << "\n";
+	cout << "\n ******************************\nPrinting hash table";
 	for(int i=0; i<N; i++){
 		Entry *curr_bin_pos_i = h_table[i];
-		cout << "\n bin " << i << ":\t";
+		cout << "\n bin " << i << ":   ";
 		while (curr_bin_pos_i){
 			cout << curr_bin_pos_i->key << " ";
 			Entry *next = curr_bin_pos_i->next;
 			curr_bin_pos_i = next;	
 		}
 	}
-	cout << "\n";
 }
 
 void HASH_TABLE :: insert(int key)
@@ -98,8 +98,6 @@ void HASH_TABLE :: insert(int key)
 }
 
 
-
- 
 // modern approach to generate rnd numbers in [0, 99]
 int generate_randomness(){
 	// modern approach to randomness
@@ -110,13 +108,10 @@ int generate_randomness(){
 }
 
 
-
-
 void print_dictionary(int S[N], int length)
 {
-	cout << "\n\nPrinting my dictionary\n";
 	for(int i=0; i < length; i++)
-		cout << "value: " << S[i] << " " << _2_hash_family(S[i]) << "\n";
+		cout << "value: " << S[i] << ", hashed: " << _2_hash_family(S[i]) << "\n";
 }
 
 void fill_dictionary(int S[N], int length)
@@ -142,12 +137,14 @@ int main()
 	int S[N] = {};
 	int length_S = N;
 	fill_dictionary(S, length_S);
+	cout << "\n\nPrinting my dictionary S\n";
 	print_dictionary(S, length_S);
 	
 	// setting Universe
 	int U[2] = {};
 	int length_U = sizeof(U) / sizeof(int);
 	fill_dictionary(U, length_U);
+	cout << "\n\nPrinting my dictionary U\n";
 	print_dictionary(U, length_U);
 
 
