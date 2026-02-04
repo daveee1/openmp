@@ -10,26 +10,15 @@ using std::cout;	// i just import cout, not all the package
 
 
 const int N = 20;	// size of the dictionary
-const int size_hash = N/4;
-const int a, b;		// hash function parameters FIRST LEVEL
+int a, b;		// hash function parameters FIRST LEVEL
 
-
-// TODO how to implement the second level hash?
-// i need to create another hash_table: each bin of the first level will point 
-// into the second level
-void oneLevel_2_twoLevel(HASH_TABLE h)
-{
-	// i take one bin: for that bin i create a separate hash table
-	for(int i=0; i < size_hash; i++){
-		
-	}	
-}
 
 
 
 // function that creates a pairwise independent hash function
 int _2_hash_family(int x)
 {
+	int size_hash = N/4; // as example TODO
 	return (a * x + b) % size_hash;
 }
 
@@ -46,14 +35,15 @@ class HASH_TABLE{
 		};
 
 		Entry **h_table;
-		
+		const int size_hash = N/4;
+
 	public:
 		explicit HASH_TABLE();
 		~HASH_TABLE();
 		void insert(int key);
 		void print_hashtable();
 		int bin_size(int index);
-		
+		int size_HASH_TABLE();
 };
 
 
@@ -79,6 +69,8 @@ HASH_TABLE :: ~HASH_TABLE()
 	}
 	delete [] h_table;
 } 	
+
+int HASH_TABLE :: size_HASH_TABLE(){ return size_hash;}
 
 void HASH_TABLE :: print_hashtable()
 {
@@ -121,6 +113,32 @@ void HASH_TABLE :: insert(int key)
 	}
 	curr->next = new Entry{key, nullptr};
 }
+
+
+class _2_level_HASH_TABLE : public HASH_TABLE 
+{
+	private:
+		HASH_TABLE h;
+		
+	public:
+		explicit _2_level_HASH_TABLE();
+		~ _2_level_HASH_TABLE();
+		void insert_bin_into_second_HASH_TABLE(HASH_TABLE h);
+};
+
+
+// TODO how to implement the second level hash?
+// i need to create another hash_table: each bin of the first level will point 
+// into the second level.
+void _2_level_HASH_TABLE :: insert_bin_into_second_HASH_TABLE(HASH_TABLE h)
+{
+	// i take one bin: for that bin i create a separate hash table
+	for(int i=0; i < h.size_HASH_TABLE(); i++){
+		Entry *curr_bin = h[i];
+		
+	}	
+}
+
 
 
 // modern approach to generate rnd numbers in [0, 99]
