@@ -9,16 +9,28 @@ using std::cout;	// i just import cout, not all the package
 
 
 
-
 const int N = 20;	// size of the dictionary
-int a, b;		// hash function parameters
+const int size_hash = N/4;
+const int a, b;		// hash function parameters FIRST LEVEL
+
+
+// TODO how to implement the second level hash?
+// i need to create another hash_table: each bin of the first level will point 
+// into the second level
+void oneLevel_2_twoLevel(HASH_TABLE h)
+{
+	// i take one bin: for that bin i create a separate hash table
+	for(int i=0; i < size_hash; i++){
+		
+	}	
+}
 
 
 
-// function that creates an hash function pairwise independent
+// function that creates a pairwise independent hash function
 int _2_hash_family(int x)
 {
-	return (a * x + b) % N;
+	return (a * x + b) % size_hash;
 }
 
 
@@ -32,7 +44,6 @@ class HASH_TABLE{
 			int key;     
 			Entry *next;
 		};
-		//TODO create methods to return the key of the entries
 
 		Entry **h_table;
 		
@@ -41,21 +52,22 @@ class HASH_TABLE{
 		~HASH_TABLE();
 		void insert(int key);
 		void print_hashtable();
+		int bin_size(int index);
 		
 };
 
 
 HASH_TABLE::HASH_TABLE()
 {
-	h_table = new Entry*[N];
-	for (int i=0; i<N; i++)
+	h_table = new Entry*[size_hash];
+	for (int i=0; i < size_hash; i++)
 		h_table[i] = nullptr;
 }
 
 
 HASH_TABLE :: ~HASH_TABLE()
 {
-	for(int i=0; i<N; i++)
+	for(int i=0; i < size_hash; i++)
 	{
 		Entry *curr = h_table[i]; //pointer to current bin first element
 		while (curr)
@@ -71,7 +83,7 @@ HASH_TABLE :: ~HASH_TABLE()
 void HASH_TABLE :: print_hashtable()
 {
 	cout << "\n ******************************\nPrinting hash table";
-	for(int i=0; i<N; i++){
+	for(int i=0; i<size_hash; i++){
 		Entry *curr_bin_pos_i = h_table[i];
 		cout << "\n bin " << i << ":   ";
 		while (curr_bin_pos_i){
@@ -80,6 +92,19 @@ void HASH_TABLE :: print_hashtable()
 			curr_bin_pos_i = next;	
 		}
 	}
+}
+
+
+// returns the size of this bin
+int HASH_TABLE :: bin_size(int index)
+{
+	Entry *curr_bin = h_table[index];
+	int counter = 0;
+	while(curr_bin->next){
+		curr_bin = curr_bin->next;
+		counter++;
+	}
+	return counter;
 }
 
 void HASH_TABLE :: insert(int key)
@@ -108,13 +133,13 @@ int generate_randomness(){
 }
 
 
-void print_dictionary(int S[N], int length)
+void print_dictionary(int S[], int length)
 {
 	for(int i=0; i < length; i++)
 		cout << "value: " << S[i] << ", hashed: " << _2_hash_family(S[i]) << "\n";
 }
 
-void fill_dictionary(int S[N], int length)
+void fill_dictionary(int S[], int length)
 {
 	for(int i=0; i < length; i++)
 		S[i] = generate_randomness();
@@ -149,7 +174,7 @@ int main()
 
 
 	HASH_TABLE h;
-	for (int i=0; i<N; i++)
+	for (int i=0; i < N; i++)
 		h.insert(S[i]);
 	h.print_hashtable();	
 
