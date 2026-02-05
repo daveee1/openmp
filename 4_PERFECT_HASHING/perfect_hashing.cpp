@@ -35,7 +35,7 @@ class HASH_TABLE{
 		};
 
 		Entry **h_table;
-		const int size_hash = N/4;
+		const int size_hash = 4;
 
 	public:
 		explicit HASH_TABLE();
@@ -118,7 +118,7 @@ void HASH_TABLE :: insert(int key)
 class _2_level_HASH_TABLE : public HASH_TABLE 
 {
 	private:
-		HASH_TABLE h;
+		Entry ***h;
 		
 	public:
 		explicit _2_level_HASH_TABLE();
@@ -126,16 +126,53 @@ class _2_level_HASH_TABLE : public HASH_TABLE
 		void insert_bin_into_second_HASH_TABLE(HASH_TABLE h);
 };
 
+_2_level_HASH_TABLE::_2_level_HASH_TABLE()
+{
+	//new hash of hash tables
+	h = new Entry**[size_hash];
+	for (int i=0; i < size_hash; i++){
+		//each bin is zero
+		h[i] = nullptr;
+		for (int j=0; j < size_hash * size_hash; j++){
+			h[i][j] = nullptr;//each bin of the internal table
+		}
+	}
+}
+
+
+HASH_TABLE :: ~HASH_TABLE()
+{
+	for (int i=0; i<size_hash; i++)
+	{	
+		for(int j=0; j < size_hash * size_hash; j++)
+		{
+			Entry *curr = h[i][j]; //pointer to current bin first element
+			while (curr)
+			{
+				Entry *next = curr->next;
+				delete curr;
+				curr = next;
+			}
+		}
+	}
+	
+	delete [] h_table;
+} 	
+
+
+
 
 // TODO how to implement the second level hash?
 // i need to create another hash_table: each bin of the first level will point 
 // into the second level.
 void _2_level_HASH_TABLE :: insert_bin_into_second_HASH_TABLE(HASH_TABLE h)
 {
-	// i take one bin: for that bin i create a separate hash table
+	// i take one bin: for that bin with k elements...
+	// i create a separate hash table with k^2 elements
 	for(int i=0; i < h.size_HASH_TABLE(); i++){
 		Entry *curr_bin = h[i];
-		
+		int curr_bin_size = h.bin_size();
+			
 	}	
 }
 
