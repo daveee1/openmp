@@ -126,6 +126,7 @@ class _2_level_HASH_TABLE : public HASH_TABLE
 		void insert_bin_into_second_HASH_TABLE(HASH_TABLE h);
 };
 
+//TODO constructor super table
 _2_level_HASH_TABLE::_2_level_HASH_TABLE()
 {
 	//new hash of hash tables
