@@ -18,7 +18,7 @@ int a, b;		// hash function parameters FIRST LEVEL
 // function that creates a pairwise independent hash function
 int _2_hash_family(int x)
 {
-	int size_hash = N/4; // as example TODO
+	int size_hash = N/4; // as example 
 	return (a * x + b) % size_hash;
 }
 
@@ -115,10 +115,12 @@ void HASH_TABLE :: insert(int key)
 }
 
 
+
+
 class _2_level_HASH_TABLE : public HASH_TABLE 
 {
 	private:
-		Entry ***h;
+		Entry ***h_2;
 		
 	public:
 		explicit _2_level_HASH_TABLE();
@@ -126,55 +128,67 @@ class _2_level_HASH_TABLE : public HASH_TABLE
 		void insert_bin_into_second_HASH_TABLE(HASH_TABLE h);
 };
 
-//TODO constructor super table
 _2_level_HASH_TABLE::_2_level_HASH_TABLE()
 {
 	//new hash of hash tables
-	h = new Entry**[size_hash];
+	h_2 = new Entry**[size_hash];
 	for (int i=0; i < size_hash; i++){
 		//each bin is zero
-		h[i] = nullptr;
+		h_2[i] = nullptr;
 		for (int j=0; j < size_hash * size_hash; j++){
-			h[i][j] = nullptr;//each bin of the internal table
+			h_2[i][j] = nullptr;//each bin of the internal table
 		}
 	}
 }
 
 
-HASH_TABLE :: ~HASH_TABLE()
+_2_level_HASH_TABLE :: ~_2_level_HASH_TABLE()
 {
 	for (int i=0; i<size_hash; i++)
 	{	
 		for(int j=0; j < size_hash * size_hash; j++)
 		{
-			Entry *curr = h[i][j]; //pointer to current bin first element
+			Entry **curr = h_2[i][j]; //pointer to current bin first element
 			while (curr)
 			{
-				Entry *next = curr->next;
+				Entry **next = curr->next;
 				delete curr;
 				curr = next;
 			}
+			delete [] h_2[i][j];
 		}
 	}
 	
-	delete [] h_table;
+	delete [] h_2;
 } 	
 
 
 
 
 // TODO how to implement the second level hash?
+// Take the 1 level HT, create a new HT of HT:
+// for each not-null bin i in 1_HT create in the HT of HT a HT
+// with k^2 elements.
+//
+//
 // i need to create another hash_table: each bin of the first level will point 
 // into the second level.
-void _2_level_HASH_TABLE :: insert_bin_into_second_HASH_TABLE(HASH_TABLE h)
+void _2_level_HASH_TABLE :: insert_bin_into_second_HASH_TABLE(HASH_TABLE h_1)
 {
 	// i take one bin: for that bin with k elements...
 	// i create a separate hash table with k^2 elements
-	for(int i=0; i < h.size_HASH_TABLE(); i++){
-		Entry *curr_bin = h[i];
-		int curr_bin_size = h.bin_size();
-			
-	}	
+	
+	for (int i=0; i < h_1.size_HASH_TABLE(); i++){
+		// take i-th bin: if not empty
+		// put it inside the second level HT
+		Entry *curr = h_1[i];
+		if (curr != nullptr){
+			while(curr->next){
+				// we need to map the current 
+			}			
+		}
+
+	}
 }
 
 
